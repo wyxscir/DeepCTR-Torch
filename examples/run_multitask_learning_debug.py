@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # 试试deepctr-torch这个库
 # 安装这个库的时候顺便安装了tf2.20 还有torch2.0
-# 
+
+# 这个可以直接看一下mmoe模型部分是如何实现的..
 
 
 import pandas as pd
@@ -10,7 +11,7 @@ from sklearn.metrics import log_loss, roc_auc_score
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 
 from deepctr_torch.inputs import SparseFeat, DenseFeat, get_feature_names
-from deepctr_torch.models import *
+from mmoe import MMOE
 
 if __name__ == "__main__":
     # data description can be found in https://www.biendata.xyz/competition/icmechallenge2019/
@@ -23,7 +24,7 @@ if __name__ == "__main__":
     sparse_features = ["uid", "user_city", "item_id", "author_id", "item_city", "channel", "music_id", "device"]
     dense_features = ["duration_time"]  # 持续时间 上面的都叫稀疏特征 就这个持续时间叫密集特征
 
-    target = ['finish', 'like']  # 目标应该是 是否完播 和 点赞个数
+    target = ['finish', 'like']  # 目标应该是 是否完播 和 该用户是否喜欢本视频 数据可能不是很准啊就这个意思反正
     # 所以这俩就是所谓的多任务了
 
     # 1.Label Encoding for sparse features,and do simple Transformation for dense features
@@ -65,10 +66,10 @@ if __name__ == "__main__":
                  l2_reg_embedding=1e-5, task_names=target, device=device)
     model.compile("adagrad", loss=["binary_crossentropy", "binary_crossentropy"],
                   metrics=['binary_crossentropy'], )
-    # fit是训练器 200个样本很快就训练好了
+    # fit是训练器 200个样本很快就训练好了 送进来的数据还的具体看一下前面都做了什么处理
     history = model.fit(train_model_input, train[target].values, batch_size=32, epochs=10, verbose=2)
     pred_ans = model.predict(test_model_input, 256)  # 再在两个任务上进行测试
-    print("")
+    print("")  # 他这个代码没有保存模型的实现
     for i, target_name in enumerate(target):
         print("%s test LogLoss" % target_name, round(log_loss(test[target[i]].values, pred_ans[:, i]), 4))
         print("%s test AUC" % target_name, round(roc_auc_score(test[target[i]].values, pred_ans[:, i]), 4))

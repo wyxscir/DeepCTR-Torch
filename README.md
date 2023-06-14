@@ -1,10 +1,7 @@
 # DeepCTR-Torch
 
-[![Python Versions](https://img.shields.io/pypi/pyversions/deepctr-torch.svg)](https://pypi.org/project/deepctr-torch)
-[![Downloads](https://pepy.tech/badge/deepctr-torch)](https://pepy.tech/project/deepctr-torch)
-[![PyPI Version](https://img.shields.io/pypi/v/deepctr-torch.svg)](https://pypi.org/project/deepctr-torch)
-[![GitHub Issues](https://img.shields.io/github/issues/shenweichen/deepctr-torch.svg
-)](https://github.com/shenweichen/deepctr-torch/issues)
+在examples里里面：
+可以调试ple, mmoe的模型
 
 
 [![Documentation Status](https://readthedocs.org/projects/deepctr-torch/badge/?version=latest)](https://deepctr-torch.readthedocs.io/)
